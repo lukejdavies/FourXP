@@ -7,5 +7,5 @@ Author: Luke Davies
 Maintainer: Luke Davies <luke.j.davies@uwa.edu.au>
 Description: Extragalactic Analysis Pipeline for 4MOST, measure redshifts and spectral properties of 4MOST data
 License: GPL-3
-Depends: R (>= 3.00), FITSio, astro, magicaxis, Cairo, fftw, doParallel
+Depends: R (>= 3.00), magicaxis,fftw
 RoxygenNote: 6.1.0
