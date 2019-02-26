@@ -253,7 +253,10 @@ options(warn=-1)
   lines(spec$wave, sky, col='darkgreen')
   lines(spec$wave, sn, col='gold')
   
+  par(mfrow = c(1, 1))
+  par(mar=c(3.1,3.1,3.1,3.1))
   
+  layout(matrix(c(1), 1, 1, byrow = TRUE))
 
 options(warn=0)
 

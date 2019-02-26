@@ -8,7 +8,7 @@ getfilt(filter)
 }
 \arguments{
 \item{filter}{string of the filter to load. Options are:
-GALEX_FUV, GALEX_NUV, sdss_u,sdss_g,sdss_r,sdss_i,sdss_z, des_u,des_g,
+GALEX_FUV, GALEX_NUV, sdss_u,sdss_g,sdss_r,sdss_i,sdss_z, VST_u, VST_g,VST_r,VST_i,des_u,des_g,
 des_r,des_i,des_z,des_Y,VISTA_Z,VISTA_Y,VISTA_J,VISTA_H,VISTA_K, WISE_W1,
 WISE_W2,WISE_W3,WISE_W4,Herschel_100,Herschel_160,Herschel_250,Herschel_350,Herschel_500}
 }
