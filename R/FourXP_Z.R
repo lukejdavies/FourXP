@@ -41,6 +41,7 @@ FourXP_Z= function(specRaw, tempFile = NA,oversample = 5, num = 5, templateNumbe
     
     cat('**WARNING** No error supplied! Using dummy error....','\n')
     specRaw$error<-rep(median(specRaw$flux, na.rm=T)/10000, length(specRaw$flux))
+    
   }
   
   if (is.na(tempFile)){tempFile = paste(.libPaths(),'/FourXP/data/calibrators/AutoZTemp/filtered-templates.fits',sep='')}
