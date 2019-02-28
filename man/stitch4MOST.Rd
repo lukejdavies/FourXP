@@ -4,11 +4,20 @@
 \alias{stitch4MOST}
 \title{Stitches together 4MOST arms}
 \usage{
-stitch4MOST(blue_file, green_file, red_file, blue_thru_file,
-  green_thru_file, red_thru_file, filt_scale = "VST_r", mag_scale = NA,
-  makePlot = T, outName = "stictch4MOSTout.pdf")
+stitch4MOST(observeSpec4FSOut = NA, id = id, blue_file = blue_file,
+  green_file = green_file, red_file = red_file,
+  blue_thru_file = blue_thru_file, green_thru_file = green_thru_file,
+  red_thru_file = red_thru_file, ParaFile = NA, filt_scale = "VST_r",
+  mag = NA, expMin = NA, nSub = NA, makePlot = F,
+  outName = "stictch4MOSTout.pdf")
 }
 \arguments{
+\item{observeSpec4FSOut}{can be provided as output of observeSpec4FSOut().If so,
+Many of the following inputs are ignored (except makePlot and outName). If not using in this
+way, set observeSpec4FSOut=NA}
+
+\item{id}{ID to assing to current spectrum}
+
 \item{blue_file}{input FITS file for blue arm (output from 4MOST ETC)}
 
 \item{green_file}{input FITS file for green arm (output from 4MOST ETC)}
@@ -21,25 +30,26 @@ stitch4MOST(blue_file, green_file, red_file, blue_thru_file,
 
 \item{red_thru_file}{red thougput file for ETC}
 
+\item{ParaFile}{laoction of ETC output paramters file (nice to have but not essentail)}
+
 \item{filt_scale}{if you wish to scale to a magnitude in a particular band, name the band here as a string. Options can be found with ?getfilt}
 
-\item{mag_scale}{AB magnitude in filt_scale to scale to}
+\item{mag}{AB magnitude in filt_scale to scale to (not needed and if ParaFile is provided, will be read from there)}
 
-\item{makePlot}{TRUE/FALSE make a PDF figure with the output spectrum and diagnositics}
+\item{expMin}{exposure time of current spectrum in min (not needed and if ParaFile is provided, will be read from there)}
+
+\item{nSub}{number of sub exposure in current spectrum (not needed and if ParaFile is provided, will be read from there)}
+
+\item{makePlot}{TRUE/FALSE make a PDF figure with the output spectrum and diagnostics}
 
 \item{outName}{if makePlot==TRUE, string of output plot file names}
 }
 \value{
-A list containing wave, flux, error, scaled flux, scaled error, mag_scale, filt_scale for spliced spectrum
+A list containing wave, flux, error, scaled flux, scaled error, mag, filt_scale for spliced spectrum, raw measurments from each arm, and paramters file.
 }
 \description{
 Function takes outputs formthe 4MOST ETC and filter response curves and stiches them togther. 
-Can also scale to a desired magnitude in a given band. However, to do this you will need FourXP::getfilt installed
-and have unpacked the calibrator files:
-
-> LibPaths<-.libPaths()
-
-> system(paste('tar -xvf ', LibPaths, '/FourXP/data/calibrators.tar --directory ', LibPaths, '/FourXP/data/',sep=''))
+Can also scale to a desired magnitude in a given band.
 }
 \examples{
 blue_file<-"specout_template_TempSim_SF_Vhighz_LRS_blue.fits"
@@ -48,11 +58,18 @@ red_file<-"specout_template_TempSim_SF_Vhighz_LRS_red.fits"
 blue_thru_file<-"4FS-ETC_app/4FS_ETC_system_model_v0.2/LRS/lrs_blue_material_4fs_efficiency_total.fits"
 green_thru_file<-"4FS-ETC_app/4FS_ETC_system_model_v0.2/LRS/lrs_green_material_4fs_efficiency_total.fits"
 red_thru_file<-"4FS-ETC_app/4FS_ETC_system_model_v0.2/LRS/lrs_red_material_4fs_efficiency_total.fits"
+ParaFile="ETC_input_params_tmp.txt"
 filt_scale='VST_r'
-mag_scale=19
+mag=19
 makeplot=T
 outName='stictch4MOSTout.pdf'
-spec<-stitch4MOST(blue_file,green_file,red_file, blue_thru_file, green_thru_file, red_thru_file, filt_scale=filt_scale, mag_scale=mag_scale, makePlot=T, outName=outName)
+spec<-stitch4MOST(blue_file,green_file,red_file, blue_thru_file, green_thru_file, red_thru_file, filt_scale=filt_scale, mag=mag, makePlot=T, outName=outName)
+
+or more simply:
+spec<-makeSpec(id='D134', z=zTest, mag=19.8, band='VST_r', col=0.55, mass=10.2,sfr=7,agn='F')
+observeSpec4FSOut<-observeSpec4FS(spec, expMin=60, nSub=3, keepFITS=F)
+specObs<-stitch4MOST(observeSpec4FSOut=observeSpec4FSOut)
+plotSpec.basic(specObs)
 }
 \author{
 L. Davies <luke.j.davies@uwa.edu>

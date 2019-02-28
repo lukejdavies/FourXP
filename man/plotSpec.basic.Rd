@@ -12,10 +12,14 @@ plotSpec.basic(spec = spec, cex.axis = 1.4, cex.lab = 1.4,
 
 \item{degSmooth}{Hanning smoothing to apply (odd number)}
 
+\item{xlim}{x range of plot (if not supplied will use sensible values)}
+
+\item{ylim}{y range of plot (if not supplied will use sensible values)}
+
 \item{z}{FITS file row number}
 }
 \description{
-Plots a basic spectrum with spec$flux and spec$wave paramters
+Plots a basic spectrum with spec$flux and spec$wave parameters
 }
 \examples{
 load(paste(.libPaths(),'/FourXP/data/ExampleSpec.Rdata',sep=''))

@@ -4,9 +4,9 @@
 \alias{plotLines}
 \title{Overplot the position of common spectral features on the currently plotted spectrum}
 \usage{
-plotLines(z = 0, xunit = "ang", labPos = 100, labOff = -50,
-  EmCol = "blue", AbsCol = "darkgreen", lty = 2, lwd = 1,
-  cex = 0.3, ...)
+plotLines(z = 0, xunit = "ang", labPos = 100, labOff = 0,
+  EmCol = "blue", AbsCol = "darkgreen", AGNCol = "skyblue2",
+  lty = 2, lwd = 1, cex = 0.3, main = F, Air = TRUE, ...)
 }
 \arguments{
 \item{z}{redshift at which to overplot lines}
@@ -21,11 +21,17 @@ plotLines(z = 0, xunit = "ang", labPos = 100, labOff = -50,
 
 \item{AbsCol}{colour to plot absorption lines}
 
+\item{AGNCol}{colour to plot strong AGN lines}
+
 \item{lty}{line type for plotting}
 
 \item{lwd}{line thinckness for plotting}
 
 \item{cex}{label text size}
+
+\item{main}{TRUE/FALSE only plot common lines}
+
+\item{Air}{TRUE/FALSE plot line in air wavelengths (FALSE=Vacuum wavelengths)}
 }
 \description{
 Function to plot the position of common spectral absorption and emission line features

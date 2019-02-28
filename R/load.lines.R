@@ -25,13 +25,15 @@
 #' @export
 load.lines=function(){
   c<-299792458
-  names <- c('Lya', 'OIIB','OIIR', 'HB', 'OIIIB', 'OIIIR', 'HA', 'NIIB', 'NIIR', 'SIIB', 'SIIR', 'K', 'H', 'G', 'Mg', 'Na')
-  stellar <- c(F,F,F,F,F,F,F,F,F,F,F,T,T,T,T,T)
-  wave_ang <- c(1215.6, 3726.03, 3728.82, 4861.33,4958.92, 5006.84, 6562.80, 6548.03, 6583.41, 6716.47, 6730.85, 3933.663, 3964.468, 4304.4,5172.68,5895.92)
+
+  names <- c('O VI','Ly-alpha', 'N V', 'O I','C II','Si IV','Si IV+O IV','C IV','He II', 'O III', 'Al III', 'C III','C II', 'Ne IV', 'Mg II', 'Ne V', 'Ne VI', 'O II', '', 'He I', 'S II','H-delta','H-gamma', 'O III', 'H-beta', 'O III', '','O III', 'O I', 'O I','N I','N II', 'H-alpha', 'N II', 'S II', 'S II', 'CaK&H', '', 'G-band', 'Mg', 'Na', 'Ca II', 'Ca II', 'Ca II') 
+  wave_ang <- c(1033.82,1215.24,1240.81,1305.53,1335.31,1397.61, 1399.8, 1549.48, 1640.4, 1665.85, 1857.4,1908.734,2326.0,2439.5,2799.117,3346.79,3426.85,3727.092,3729.875,3889.0,4072.3,4102.89,4341.68,4364.436,4862.68,4932.603,4960.295,5008.240,6302.046,6365.536,6529.03,6549.86,6564.61,6585.27,6718.29,6732.67,3934.777,3969.588,4305.61,5176.7,5895.6,8500.36,8544.44,8664.52)
+  stellar <- c(rep(FALSE,36), rep(TRUE,8))
+  agnStrong <- c(T, T,T,F,F,F,T,T,F,F,F,T,T,F,T,F,F,F,F,F,T,T,F,T,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F)
   freq_hz <- c/(wave_ang/(10.^10))
   wave_m <- wave_ang/(10.^10)
   wave_micron <- wave_ang/(10.^4)
   wave_nm <- wave_ang/(10.^1)
-  lines<-data.frame(names, wave_ang,wave_m,wave_micron,wave_nm, freq_hz, stellar)
+  lines<-data.frame(names, wave_ang,wave_m,wave_micron,wave_nm, freq_hz, stellar, agnStrong)
   return(lines) 
 }

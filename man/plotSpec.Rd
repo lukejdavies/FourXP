@@ -4,14 +4,26 @@
 \alias{plotSpec}
 \title{Plots a spectrum object generated as part of TAZ}
 \usage{
-plotSpec(spec = spec, leg.cex = 1.4, degSmooth = 7, xlim = NA,
-  ylim = NA)
+plotSpec(spec = spec, leg.cex = 1.4, lab.cex = 1, degSmooth = 7,
+  xlim = NA, ylim = NA, plotLeg = T, Air = TRUE)
 }
 \arguments{
 \item{spec}{An R stucture containing spec$wave = vector of spectrum wavelengths
 and spec$flux = vector of spectrum fluxes.}
 
 \item{leg.cex}{Size of font in legend}
+
+\item{lab.cex}{Size of font in axis labels}
+
+\item{degSmooth}{hanning smooth value to apply to spectrum}
+
+\item{xlim}{x range of plot (if not supplied will use sensible values)}
+
+\item{ylim}{y range of plot (if not supplied will use sensible values)}
+
+\item{plotLeg}{TRUE/FALSE plot legend}
+
+\item{Air}{TRUE/FALSE plot line in air wavelengths (FALSE=Vacuum wavelengths)}
 }
 \description{
 Function takes a 'spec' R list with sepc$wave, spec$flux, ...

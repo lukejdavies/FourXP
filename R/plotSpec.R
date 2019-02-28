@@ -7,20 +7,23 @@
 #' 
 #' @param spec An R stucture containing spec$wave = vector of spectrum wavelengths
 #' and spec$flux = vector of spectrum fluxes.  
+#' @param leg.cex Size of font in legend  
+#' @param lab.cex Size of font in axis labels 
+#' @param degSmooth hanning smooth value to apply to spectrum
+#' @param xlim x range of plot (if not supplied will use sensible values)
+#' @param ylim y range of plot (if not supplied will use sensible values)
+#' @param plotLeg TRUE/FALSE plot legend
+#' @param Air TRUE/FALSE plot line in air wavelengths (FALSE=Vacuum wavelengths)
 #' @author L. Davies <luke.j.davies@uwa.edu>
-#' @param leg.cex Size of font in legend   
 #' @examples 
 #' load(paste(.libPaths(),'/FourXP/data/ExampleSpec.Rdata',sep=''))
 #' plotSpec(spec)
 #' @export
-plotSpec<-function(spec=spec, leg.cex=1.4, degSmooth=7, xlim=NA, ylim=NA){
-  
-  
+plotSpec<-function(spec=spec, leg.cex=1.4, lab.cex=1, degSmooth=7, xlim=NA, ylim=NA, plotLeg=T, Air=TRUE){
   
 
-  
   if (is.na(xlim[1])==T){xlim<-c(min(spec$wave, na.rm=T), max(spec$wave, na.rm=T))}
-  if (is.na(ylim[1])==T){ylim<-c(min(spec$flux, na.rm=T), max(spec$flux, na.rm=T))}
+  if (is.na(ylim[1])==T){ylim<-c(min(spec$flux, na.rm=T), max(hanning.smooth(spec$flux, degree=degSmooth), na.rm=T))}
   
 options(warn=-1)  
   
@@ -33,9 +36,9 @@ options(warn=-1)
   
   textZ<-spec$z
   
-  if (is.null(spec$MAG)==TRUE){spec$MAG<-NA}
-  if (is.null(spec$ID)==TRUE){spec$ID<-'No ID Provided'}  
-  if (is.null(spec$EXP)==TRUE){spec$EXP<-NA}
+  if (is.null(spec$mag)==TRUE){spec$mag<-NA}
+  if (is.null(spec$id)==TRUE){spec$id<-'No id Provided'}  
+  if (is.null(spec$expMin)==TRUE){spec$expMin<-NA}
   if (is.null(spec$prob)==TRUE){spec$prob<-NA} 
   if (is.null(spec$prob)==TRUE){spec$prob<-NA} 
   
@@ -60,11 +63,29 @@ options(warn=-1)
   
   peak_F<-max(spec$flux, na.rm=T)
   
-  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=xlim, ylim=ylim, main=paste(spec$ID, ' - Hanning Smoothed, degree=',degSmooth,sep=''), cex.axis=1.4)
+  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=xlim, ylim=ylim, main=paste(spec$id, ' - Hanning Smoothed, degree=',degSmooth,sep=''), cex.axis=lab.cex)
   
   
   
-  plotLines(z=plotZ, xunit='ang', labPos=0.8*max(spec$flux,na.rm=T), lty=2, cex=1.2, EmCol='blue', AbsCol='red', labOff=-40)
+  plotLines(z=plotZ, xunit='ang', labPos=0.7*max(hanning.smooth(spec$flux, degree=degSmooth),na.rm=T), lty=2, cex=1.2, EmCol='blue', AbsCol='red', AGNCol='darkgreen',labOff=0, Air=Air)
+  
+  leg<-c(paste('id=',spec$id,sep=''), paste('z=',format(textZ, nsmall=2,digits=2),sep=''), paste('Mag=',spec$mag,sep=''), paste('Prob=',format(spec$prob, nsmall=2,digits=2),sep=''), paste('TEXP (min)=',spec$expMin,sep=''), 'Sky', 'Variance', 'BestFit Template')
+  legCol=c('black','black','black','black','black','darkgreen', 'gold', 'indianred2')
+  
+  if (is.null(spec$tmp)){
+    legCol<-legCol[which(leg!='BestFit Template')]
+    leg<-leg[which(leg!='BestFit Template')]
+  }
+  
+  if (is.null(spec$sky)){
+    legCol<-legCol[which(leg!='Sky')]
+    leg<-leg[which(leg!='Sky')]
+  }
+  if (is.null(spec$sn)){
+    legCol<-legCol[which(leg!='Variance')]
+    leg<-leg[which(leg!='Variance')]
+  }
+    
   
   if (is.null(spec$tmpWave)==TRUE){spec$tmpWave<-spec$wave}
   if (is.null(spec$tmpFlux)==TRUE){spec$tmpFlux<-rep(NA, length(spec$wave))}
@@ -80,16 +101,16 @@ options(warn=-1)
   lines(spec$wave, sn, col='gold')
   
   
+
   
-  
-  legend('topleft', legend=c(paste('ID=',spec$ID,sep=''), paste('z=',format(textZ, nsmall=2,digits=2),sep=''), paste('Y-mag=',spec$MAG,sep=''), paste('Prob=',format(spec$prob, nsmall=2,digits=2),sep=''), paste('TEXP (min)=',spec$EXP/60,sep=''), 'Sky', 'Variance', 'BestFit Template'), text.col=c('black','black','black','black','black','darkgreen', 'gold', 'indianred2'), bg='white', cex=leg.cex)
+  if (plotLeg==T){legend('topleft', legend=leg, text.col=legCol, bg='white', cex=leg.cex)}
   
   
   
   textZ<-spec$z
   
-  if (is.null(spec$MAG)==TRUE){spec$MAG<-NA}
-  if (is.null(spec$ID)==TRUE){spec$ID<-'No ID Provided'}  
+  if (is.null(spec$mag)==TRUE){spec$mag<-NA}
+  if (is.null(spec$id)==TRUE){spec$id<-'No id Provided'}  
   if (is.null(spec$EXP)==TRUE){spec$EXP<-NA}
   if (is.null(spec$prob)==TRUE){spec$prob<-NA} 
   
@@ -111,19 +132,22 @@ options(warn=-1)
   
   
   peak_F<-max(spec$flux, na.rm=T)
-  
+  med_F<-median(spec$flux, na.rm=T)
   
   
   range<-250
   wavePoint<-3727
-  peak<-1.2*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  peak<-1.3*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  med<-median(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
   if (is.finite(peak)==F){peak=peak_F}
-  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(-peak,peak), main='OII', cex.axis=1.4)
+  if (is.finite(med)==F){med=med_F}
+  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(med-peak,med+peak), main='OII', cex.axis=lab.cex)
   #plotLines(z=plotZ, xunit='ang', labPos=0.8*peak, lty=2, cex=1.2, EmCol='blue', AbsCol='red', labOff=-20)
   
+  plotLines(z=plotZ, xunit='ang', labPos=0.8*(med+peak), lty=2, cex=1.2, EmCol='blue', AbsCol='red', AGNCol='darkgreen',labOff=0, Air=Air)
   
-  lines((1+plotZ)*c(3728, 3728), c(-100,100), lty=2, col='blue')
-  text(((1+plotZ)*c(3728))-20, 0.8*peak, 'OII', srt=270, col='blue', cex=1.2)
+  #lines((1+plotZ)*c(3728, 3728), c(-100,100), lty=2, col='blue')
+  #text(((1+plotZ)*c(3728))-20, 0.8*peak, 'OII', srt=270, col='blue', cex=1.2)
   
   yr<-c(-peak,peak)
   hereFlux<-spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)]
@@ -143,10 +167,13 @@ options(warn=-1)
   
   range<-500
   wavePoint<-4950
-  peak<-1.2*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  peak<-1.3*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  med<-median(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
   if (is.finite(peak)==F){peak=peak_F}
-  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(-peak,peak), main='OIII/H-beta', cex.axis=1.4)
-  plotLines(z=plotZ, xunit='ang', labPos=0.8*peak, lty=2, cex=1.2, EmCol='blue', AbsCol='red', labOff=-20)
+  if (is.finite(med)==F){med=med_F}
+  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(med-peak,med+peak), main='OIII/H-beta', cex.axis=lab.cex)
+  plotLines(z=plotZ, xunit='ang', labPos=0.8*(med+peak), lty=2, cex=1.2, EmCol='blue', AbsCol='red', AGNCol='darkgreen',labOff=0, Air=Air)
+  
   yr<-c(-peak,peak)
   hereFlux<-spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)]
   
@@ -165,10 +192,13 @@ options(warn=-1)
   
   range<-300
   wavePoint<-6650
-  peak<-1.2*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  peak<-1.3*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  med<-median(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
   if (is.finite(peak)==F){peak=peak_F}
-  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(-peak,peak), main='H-alpha, NII, SII', cex.axis=1.4)
-  plotLines(z=plotZ, xunit='ang', labPos=0.8*peak, lty=2, cex=1.2, EmCol='blue', AbsCol='red', labOff=-20)
+  if (is.finite(med)==F){med=med_F}
+  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(med-peak,med+peak), main='H-alpha, NII, SII', cex.axis=lab.cex)
+  plotLines(z=plotZ, xunit='ang', labPos=0.8*(med+peak), lty=2, cex=1.2, EmCol='blue', AbsCol='red', AGNCol='darkgreen',labOff=0, Air=Air)
+  
   yr<-c(-peak,peak)
   hereFlux<-spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)]
   
@@ -188,10 +218,13 @@ options(warn=-1)
   
   range<-500
   wavePoint<-4150
-  peak<-1.2*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  peak<-1.3*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  med<-median(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
   if (is.finite(peak)==F){peak=peak_F}
-  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(-peak,peak), main='Ca H&K, G-band', cex.axis=1.4)
-  plotLines(z=plotZ, xunit='ang', labPos=0.8*peak, lty=2, cex=1.2, EmCol='blue', AbsCol='red', labOff=-20)
+  if (is.finite(med)==F){med=med_F}
+  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(med-peak,med+peak), main='Ca H&K, G-band', cex.axis=lab.cex)
+  plotLines(z=plotZ, xunit='ang', labPos=0.8*(med+peak), lty=2, cex=1.2, EmCol='blue', AbsCol='red', AGNCol='darkgreen',labOff=0, Air=Air)
+  
   yr<-c(-peak,peak)
   hereFlux<-spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)]
   
@@ -211,10 +244,13 @@ options(warn=-1)
   
   range<-250
   wavePoint<-5175
-  peak<-1.2*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  peak<-1.3*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  med<-median(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
   if (is.finite(peak)==F){peak=peak_F}
-  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(-peak,peak), main='Mg', cex.axis=1.4)
-  plotLines(z=plotZ, xunit='ang', labPos=0.8*peak, lty=2, cex=1.2, EmCol='blue', AbsCol='red', labOff=-20)
+  if (is.finite(med)==F){med=med_F}
+  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(med-peak,med+peak), main='Mg', cex.axis=lab.cex)
+  plotLines(z=plotZ, xunit='ang', labPos=0.8*(med+peak), lty=2, cex=1.2, EmCol='blue', AbsCol='red', AGNCol='darkgreen',labOff=0, Air=Air)
+  
   yr<-c(-peak,peak)
   hereFlux<-spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)]
   
@@ -233,10 +269,13 @@ options(warn=-1)
   
   range<-250
   wavePoint<-5895
-  peak<-1.2*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  peak<-1.3*max(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
+  med<-median(spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)],na.rm=T)
   if (is.finite(peak)==F){peak=peak_F}
-  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(-peak,peak), main='Na', cex.axis=1.4)
-  plotLines(z=plotZ, xunit='ang', labPos=0.8*peak, lty=2, cex=1.2, EmCol='blue', AbsCol='red', labOff=-20)
+  if (is.finite(med)==F){med=med_F}
+  magplot(spec$wave, hanning.smooth(spec$flux, degree=degSmooth), xlab='Wavelength, Ang', ylab='Counts', grid=T, type='l', xlim=(1+plotZ)*wavePoint+c(-range,range), ylim=c(med-peak,med+peak), main='Na', cex.axis=lab.cex)
+  plotLines(z=plotZ, xunit='ang', labPos=0.8*(med+peak), lty=2, cex=1.2, EmCol='blue', AbsCol='red', AGNCol='darkgreen',labOff=0, Air=Air)
+  
   yr<-c(-peak,peak)
   hereFlux<-spec$flux[which(spec$wave > ((1+plotZ)*wavePoint)-range & spec$wave < ((1+plotZ)*wavePoint)+range)]
   

@@ -4,12 +4,10 @@
 \alias{FourXP_Z}
 \title{4MOST redshifting tool for 1D spectra}
 \usage{
-FourXP_Z(specRaw,
-  tempFile = "data/calibrators/AutoZTemp/filtered-templates.fits",
-  oversample = 5, num = 5, templateNumbers = c(2:14, 16:22, 40:47),
-  stLambda = 3726, endLambda = 8850, minval = -10000,
-  maxval = 1e+06, z_prior = c(-1, 1000), doHelio = T, highZ = T,
-  verbose = TRUE)
+FourXP_Z(specRaw, tempFile = NA, oversample = 5, num = 5,
+  templateNumbers = c(2:14, 16:22, 40:47), stLambda = 3726,
+  endLambda = 8850, minval = -10000, maxval = 1e+06,
+  z_prior = c(-1, 1000), doHelio = T, highZ = T, verbose = TRUE)
 }
 \arguments{
 \item{specRaw}{R struture contianing information required information.
@@ -42,6 +40,10 @@ observatory altitude.}
 provide RA,DEC,UTMJD, longitude, latitude and altitue in the specRaw structure.}
 
 \item{verbose}{TRUE/FLASE - let me know what's going on.}
+}
+\value{
+a list containing various outputs from the redshifting code. key parameters are: 
+results$Z=best-fit redshift, results$Z1_PROB=probability of best-fit redshift and results$TEMPLATE=best fit template number.
 }
 \description{
 Based on redshfiting tool originaly developed by Ivan Baldry in IDL (Baldry et al., 2014 MNRAS). 
