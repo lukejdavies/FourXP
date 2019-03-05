@@ -1,0 +1,9 @@
+#-4FS_ETC.c:Comment:  Full software version information:
+# 4FS_ETC.c                      (git:                    , ; File timestamp: Mon Jun 20 16:54:56 2016) compiled at Jul 12 2016 12:14:44 (compiler version 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79))
+# ./4FS_ETC.h                    (git:                    , ; File timestamp: Mon Jun 20 16:54:56 2016) compiled at Jul 12 2016 12:14:44 (compiler version 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79))
+# ETC_input_params_lib.c         (git:                    , ; File timestamp: Mon Jun 20 16:54:56 2016) compiled at Jul 12 2016 12:14:45 (compiler version 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79))
+# ./ETC_input_params_lib.h       (git:                    , ; File timestamp: Mon Jun 20 16:54:56 2016) compiled at Jul 12 2016 12:14:44 (compiler version 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79))
+# params_lib.c                   (CVS: $Revision: 1.9 $   , $Date: 2015/11/11 10:53:40 $; File timestamp: Mon Jun 20 16:54:56 2016) compiled at Jul 12 2016 12:14:41 (compiler version 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79))
+# ../common/params_lib.h         (CVS: $Revision: 1.4 $   , $Date: 2015/08/18 11:42:08 $; File timestamp: Mon Jun 20 16:54:56 2016) compiled at Jul 12 2016 12:14:44 (compiler version 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79))
+# utensils_lib.c                 (CVS: $Revision: 1.12 $  , $Date: 2015/06/25 14:23:14 $; File timestamp: Mon Jun 20 16:54:56 2016) compiled at Jul 12 2016 12:14:41 (compiler version 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79))
+# ../common/utensils_lib.h       (CVS: $Revision: 1.9 $   , $Date: 2015/08/18 11:42:08 $; File timestamp: Mon Jun 20 16:54:56 2016) compiled at Jul 12 2016 12:14:44 (compiler version 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79))

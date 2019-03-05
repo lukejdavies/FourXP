@@ -3,7 +3,7 @@
 #' @description Based on redshfiting tool originaly developed by Ivan Baldry in IDL (Baldry et al., 2014 MNRAS). 
 #' Repurposed & expanded in R by Luke Davies and Leon Drygala. Takes a 1D spectrum and perfoms a 
 #' Fourier cross corellation with a template spectra set. Returns the best fit redshifts
-#' and probabilities.
+#' and probabilities. NOTE: Assumes input is in air wavelengths! 
 #' 
 #' @param specRaw R struture contianing information required information.
 #' Must have the following componenents: specRaw$wave=vector of spectrum wavelengths, 
@@ -18,8 +18,8 @@
 #' @param templateNumbers template numbers to use in fitting
 #' @param stLambda lower bound of the wavelength range to fit over 
 #' @param endLambda = upper bound of the wavelength range to fit over
-#' @param minval minmum value to reject croos correlations
-#' @param maxval maximum value to reject croos correlations
+#' @param minval minmum value to reject cross correlations
+#' @param maxval maximum value to reject cross correlations
 #' @param z_prior redshift prior, two element vector with c(lo, hi)
 #' @param doHelio TRUE/FALSE perform helocentric correction. If TRUE you must 
 #' provide RA,DEC,UTMJD, longitude, latitude and altitue in the specRaw structure. 
@@ -38,10 +38,8 @@
 FourXP_Z= function(specRaw, tempFile = NA,oversample = 5, num = 5, templateNumbers = c(2:14,16:22,40:47), stLambda = 3726, endLambda = 8850, minval = -1.0e4, maxval = 1.0e6, z_prior=c(-1,1000), doHelio=T,highZ=T, verbose = TRUE){
   
   if (is.null(specRaw$error)){
-    
     cat('**WARNING** No error supplied! Using dummy error....','\n')
     specRaw$error<-rep(median(specRaw$flux, na.rm=T)/10000, length(specRaw$flux))
-    
   }
   
   if (is.na(tempFile)){tempFile = paste(.libPaths(),'/FourXP/data/calibrators/AutoZTemp/filtered-templates.fits',sep='')}

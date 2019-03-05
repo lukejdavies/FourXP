@@ -30,9 +30,9 @@ observatory altitude.}
 
 \item{endLambda}{= upper bound of the wavelength range to fit over}
 
-\item{minval}{minmum value to reject croos correlations}
+\item{minval}{minmum value to reject cross correlations}
 
-\item{maxval}{maximum value to reject croos correlations}
+\item{maxval}{maximum value to reject cross correlations}
 
 \item{z_prior}{redshift prior, two element vector with c(lo, hi)}
 
@@ -49,7 +49,7 @@ results$Z=best-fit redshift, results$Z1_PROB=probability of best-fit redshift an
 Based on redshfiting tool originaly developed by Ivan Baldry in IDL (Baldry et al., 2014 MNRAS). 
 Repurposed & expanded in R by Luke Davies and Leon Drygala. Takes a 1D spectrum and perfoms a 
 Fourier cross corellation with a template spectra set. Returns the best fit redshifts
-and probabilities.
+and probabilities. NOTE: Assumes input is in air wavelengths!
 }
 \examples{
 load(paste(.libPaths(),'/FourXP/data/ExampleSpec.Rdata',sep=''))
