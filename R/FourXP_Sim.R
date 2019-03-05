@@ -66,7 +66,7 @@ FourXP_Sim<-function(id='Test', zIn=0.234, mag=19.8, band='VST_r', col=0.55, mas
     if (agn=='F') {cat('   Template SFR = ',sfr,'\n')}
     if (agn=='B') {cat('   AGN Type = Broad-line','\n')}
     if (agn=='B') {cat('   AGN Type = Narrow-line','\n')}
-    cat('   Explorue Time (min) = ',expMin,'\n')
+    cat('   Exposure Time (min) = ',expMin,'\n')
     cat('   Number of sub-exposures = ',nSub,'\n')
     cat('   Airmass = ',AIRMASS,'\n')
     cat('   Sky Brightness = ',SKYBRIGHT,'\n')
@@ -78,7 +78,7 @@ FourXP_Sim<-function(id='Test', zIn=0.234, mag=19.8, band='VST_r', col=0.55, mas
     cat('Redshift Precision (in vs measured) = ', res, 'km/s \n')
     cat('Signal to Noise Blue (median 4200-5000) = ', median(specObs$blueRawSNR[which(specObs$blueRawWave>4200 & specObs$blueRawWave<5000)], na.rm=T), '\n')
     cat('Signal to Noise Green (median 5800-6600) = ', median(specObs$greenRawSNR[which(specObs$greenRawWave>5800 & specObs$greenRawWave<6600)], na.rm=T), '\n')
-    cat('Signal to Noise GRed (median 7800-8600) = ', median(specObs$redRawSNR[which(specObs$redRawWave>7800 & specObs$redRawWave<8600)], na.rm=T), '\n')
+    cat('Signal to Noise Red (median 7800-8600) = ', median(specObs$redRawSNR[which(specObs$redRawWave>7800 & specObs$redRawWave<8600)], na.rm=T), '\n')
     
     cat('\n \n')
   }

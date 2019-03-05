@@ -39,7 +39,7 @@ Now you have the development version of R installed (hopefully) I would also sug
 
 #### Source Install
 
-The easiest way to install 4XP is via a source instal in R. For this you will need the R devtools package: 
+The easiest way to install 4XP is via a source install in R. For this you will need the R devtools package: 
 
 ```R
 install.packages('devtools')
@@ -53,7 +53,7 @@ install_github("lukejdavies/FourXP")
 library(FourXP)
 ```
 
-Following this, there are a number of model and template libraries you need to have installed. The is an inbuilt function in FourXP with will downlaod and install these for you. However, you require ~1Gb of space to do this:
+Following this, there are a number of model and template libraries you need to have installed. The is an inbuilt function in FourXP with will download and install these for you. However, you require ~1Gb of space to do this:
 
 ```R
 install4XP(downloadModels = TRUE, ModelDir = ".")
@@ -61,7 +61,7 @@ install4XP(downloadModels = TRUE, ModelDir = ".")
 
 Here 'ModelDir' is where you would like the models to be saved. Certain functions in FourXP require you to point to this directory (makeSpec() and FourXP_Sim()).
 
-If you re-install FourXP, you will not need to redownload the libraries, but will need to run install4XP() as:
+If you re-install FourXP, you will not need to re-download the libraries, but will need to run install4XP() as:
 
 ```R
 install4XP(downloadModels = FALSE)
@@ -83,11 +83,11 @@ install4XP(downloadModels = FALSE)
 
 #### External Dependencies
 
-Some of the functionality of FourXP requires and insalled version of the 4MOST Exposure Time Calculator (ETC). Functions such as observeSpec4FS() and FourXP_Sim(), require that the ETC is excicutable from the command line as '4FS_ETC', you will also need to point towards the ETC system model directory (systemModDir) in these functions. 
+Some of the functionality of FourXP requires and installed version of the 4MOST Exposure Time Calculator (ETC). Functions such as observeSpec4FS() and FourXP_Sim(), require that the ETC is excicutable from the command line as '4FS_ETC', you will also need to point towards the ETC system model directory (systemModDir) in these functions. 
 
 Currently the ETC is only availabe to 4MOST team members. For further details contact L. Davies <luke.j.davies@uwa.edu>
 
-If you are within 4MOST, you can get the ETC code here: http://wiki.4most.eu/4most-facility-simulator#toc8. Simply download the code and follow the install instructions in the README. Please then ensure that the ETC is excecutable from your command line as '4FS_ETC'. 
+If you are within 4MOST, you can get the ETC code here: http://wiki.4most.eu/4most-facility-simulator#toc8. Simply download the code and follow the install instructions in the README. Please then ensure that the ETC is executable from your command line as '4FS_ETC'. 
 
 #### Examples
 
@@ -97,14 +97,14 @@ Assuming this has all installed successfully, you should now be able to load **F
 library(FourXP)
 ```
 
-You can not get halp and documentation for all FourXP functions using ?*function names*, i.e.:
+You can not get help and documentation for all FourXP functions using ?*function names*, i.e.:
 ```R
 ?makeSpec
 ```
 
 ## Generating a Model Spectrum
 
-Here lets generate a spectrum at redshift, z, 0.56 with 19.8mag in the VST r-band. The template shape will come from a galaxy with g-i colour=0.55, stellar mass=10^10.2 and star-fromation rate=7Msun/yr: 
+Here lets generate a spectrum at redshift, z, 0.56 with 19.8mag in the VST r-band. The template shape will come from a galaxy with g-i colour=0.55, stellar mass=10^10.2 and star-formation rate=7Msun/yr: 
 
 ```R
 spec<-makeSpec(id='TestSpectrum', z=0.56, mag=19.8, band='VST_r', col=0.55, mass=10.2,sfr=7,agn='F')
@@ -135,7 +135,7 @@ specAGN<-makeSpec(id='TestAGNSpectrum', z=0.76, mag=17.6, band='VST_r', agn='B')
 plotSpec(specAGN)
 ```
 
-Using our first model we can run the redshfiting code to see if we can auntomatically get the correct redshift (we should be able to as this spectrum has no noise!):
+Using our first model we can run the redshifting code to see if we can automatically get the correct redshift (we should be able to as this spectrum has no noise!):
 
 ```R
 FourXP_ZOut<-FourXP_Z(spec, verbose=F, doHelio=F)
@@ -144,7 +144,7 @@ FourXP_ZOut$results
  0.5599835  1.0000000 15.3964229 43.0000000  0.1962446  3.6376233 47.0000000  3.0522262  2.8932451 
 ```
 
-You will have had an error about and a lack of error, but don't worry about that for now! You can also see that we obtained a redshfit of z=0.5599835 with a probability of 1, which is great given our input spectrum had z=0.56! Within 4XP, there is also a test version (this is very much in flux) of an emission-line pattern matching redshfiting code FourXP_Zpat(). here we assume that the photo-z is known to 0.2 precision:  
+You will have had an error about and a lack of error, but don't worry about that for now! You can also see that we obtained a redshift of z=0.5599835 with a probability of 1, which is great given our input spectrum had z=0.56! Within 4XP, there is also a test version (this is very much in flux) of an emission-line pattern matching redshifting code FourXP_Zpat(). here we assume that the photo-z is known to 0.2 precision:  
 
 ```R
 zFit<-FourXP_Zpat(spec, z_prior=c(0.4,0.6), plotCorr=F, filter=F)
@@ -152,7 +152,7 @@ Measured Redshift =  0.5596646
 Redshift Precision (in vs measured) =  64.46018 km/s 
 ```
 
-So this gets roughtly the correct redshfit as well! 
+So this gets roughly the correct redshift as well! 
 
 For the next stages of this example, you will need to have the 4MOST ETC code installed....
 
@@ -208,7 +208,7 @@ Out<-FourXP_Sim(id='Test', zIn=0.234, mag=19.8, band='VST_r', col=0.55, mass=10.
 Running FourXP_Sim, please wait..... 
      - Making simulated spectrum... 
      - Observing spectrum using 4FS ETC... 
-     - Stictching Spectral Arms... 
+     - Stitching Spectral Arms... 
      - Running 4XP_Z... 
 
  KEY INPUT PROPERTIES: 
@@ -220,7 +220,7 @@ Running FourXP_Sim, please wait.....
    Template g-i col =  0.55 
    Template Log[M*] =  10.2 
    Template SFR =  7 
-   Explorue Time (min) =  60 
+   Exposure Time (min) =  60 
    Number of sub-exposures =  3 
    Airmass =  1.4 
    Sky Brightness =  21.77 
@@ -232,7 +232,7 @@ Measured Probability =  0.9999997
 Redshift Precision (in vs measured) =  3.341352 km/s 
 Signal to Noise Blue (median 4200-5000) =  3.078351 
 Signal to Noise Green (median 5800-6600) =  5.370941 
-Signal to Noise GRed (median 7800-8600) =  6.844171 
+Signal to Noise Red (median 7800-8600) =  6.844171 
 
  
 FourXP_Sim finished! 
