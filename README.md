@@ -22,13 +22,13 @@ Pretty simple, go here and install the most relevant **exe** file: <https://clou
 
 Varies a bit by platform. All the info on binaries is here: <https://cloud.r-project.org/bin/linux/>
 
-Debian:	`sudo apt-get install r-base r-base-dev`
+Debian: `sudo apt-get install r-base r-base-dev`
 
-Fedora:	`sudo yum install R`
+Fedora: `sudo yum install R`
 
-Suse:	More of a pain, see here <https://cloud.r-project.org/bin/linux/suse/README.html>
+Suse:   More of a pain, see here <https://cloud.r-project.org/bin/linux/suse/README.html>
 
-Ubuntu:	`sudo apt-get install r-base-dev`
+Ubuntu: `sudo apt-get install r-base-dev`
 
 If you have a poorly supported version of Linux (e.g. CentOS) you will need to install R from source with the development flags (this bit is important). You can read more here: <https://cloud.r-project.org/sources.html>
 
@@ -53,7 +53,7 @@ install_github("lukejdavies/FourXP")
 library(FourXP)
 ```
 
-Following this, there are a number of model and template libraries you need to have installed. The is an inbuilt function in FourXP with will download and install these for you. However, you require ~1Gb of space to do this:
+Following this, there are a number of model and template libraries you need to have installed. There is an inbuilt function in FourXP which will download and install these for you. However, you require ~1Gb of space to do this:
 
 ```R
 install4XP(downloadModels = TRUE, ModelDir = ".")
@@ -83,11 +83,11 @@ install4XP(downloadModels = FALSE)
 
 #### External Dependencies
 
-Some of the functionality of FourXP requires and installed version of the 4MOST Exposure Time Calculator (ETC). Functions such as observeSpec4FS() and FourXP_Sim(), require that the ETC is excicutable from the command line as '4FS_ETC', you will also need to point towards the ETC system model directory (systemModDir) in these functions. 
+Some of the functionality of FourXP requires an installed version of the 4MOST Exposure Time Calculator (ETC). Functions such as observeSpec4FS() and FourXP_Sim() require that the ETC is excecutable from the command line as '4FS_ETC', you will also need to point towards the ETC system model directory (systemModDir) in these functions. 
 
 Currently the ETC is only availabe to 4MOST team members. For further details contact L. Davies <luke.j.davies@uwa.edu>
 
-If you are within 4MOST, you can get the ETC code here: http://wiki.4most.eu/4most-facility-simulator#toc8. Simply download the code and follow the install instructions in the README. Please then ensure that the ETC is executable from your command line as '4FS_ETC'. 
+If you are within 4MOST, you can get the ETC code here: http://wiki.4most.eu/4most-facility-simulator#toc8. Download the code and follow the install instructions in the README. Please then ensure that the ETC is executable from your command line as '4FS_ETC'. 
 
 #### Examples
 
@@ -97,14 +97,14 @@ Assuming this has all installed successfully, you should now be able to load **F
 library(FourXP)
 ```
 
-You can not get help and documentation for all FourXP functions using ?*function names*, i.e.:
+You can get help and documentation for all FourXP functions using ?*function names*, i.e.:
 ```R
 ?makeSpec
 ```
 
 ## Generating a Model Spectrum
 
-Here lets generate a spectrum at redshift, z, 0.56 with 19.8mag in the VST r-band. The template shape will come from a galaxy with g-i colour=0.55, stellar mass=10^10.2 and star-formation rate=7Msun/yr: 
+Here let's generate a spectrum at redshift, z, 0.56 with 19.8mag in the VST r-band. The template shape will come from a galaxy with g-i colour=0.55, stellar mass=10^10.2 and star-formation rate=7Msun/yr: 
 
 ```R
 spec<-makeSpec(id='TestSpectrum', z=0.56, mag=19.8, band='VST_r', col=0.55, mass=10.2,sfr=7,agn='F')
@@ -165,7 +165,7 @@ lines(observeSpec4FSOut$greenRawWave, observeSpec4FSOut$greenRawFlux, type='l', 
 lines(observeSpec4FSOut$redRawWave, observeSpec4FSOut$redRawFlux, type='l', col='red')
 ```
 
-Here we are running a 120min total exposure with 4 sub-exposures (of 30min each) and keeping all of the other observing defaults (see ?observeSpec4FS for available options). We can then plot the outputs for each spectral arm. Note that we have chosen not to save the FITS image outputs of the ETC - keepFITS=FALSE.   
+Here we are running a 120min total exposure with 4 sub-exposures (of 30min each) and keeping all of the other observing defaults (see ?observeSpec4FS for available options). We can then plot the outputs for each spectral arm. We chose not to save the FITS image outputs of the ETC - `keepFITS=FALSE`.   
 
 This code only provides the 3 spectral arms of 4MOST separately, we now want to combine them to one spectrum. We do this with stitch4MOST(), which can take in the output of observeSpec4FSOut(): 
 
@@ -185,7 +185,7 @@ This makes a folder with *spec$id*_ETCout/ containing all of the 4FS_ETC outputs
 specObs<-stitch4MOST(id = 'TestSpectrum', blue_file = 'TestSpectrum_ETCout/specout_template_TestSpectrum_LRS_blue.fits', green_file = "TestSpectrum_ETCout/specout_template_TestSpectrum_LRS_green.fits", red_file = 'TestSpectrum_ETCout/specout_template_TestSpectrum_LRS_red.fits', blue_thru_file = '/Applications/4FS-ETC_app/4FS_ETC_system_model_v0.2/LRS/lrs_blue_material_4fs_efficiency_total.fits', green_thru_file = '/Applications/4FS-ETC_app/4FS_ETC_system_model_v0.2/LRS/lrs_green_material_4fs_efficiency_total.fits', red_thru_file = '/Applications/4FS-ETC_app/4FS_ETC_system_model_v0.2/LRS/lrs_red_material_4fs_efficiency_total.fits', ParaFile = "TestSpectrum_ETCout/ETC_input_params_tmp.txt", makePlot = F)
 ``
 
-Finally, we can one again redshfit our output spectrum to see if we would have obtained a redshfit with this observation: 
+Finally, we can one again redshift our output spectrum to see if we would have obtained a redshfit with this observation: 
 
 ```R
 FourXP_ZOut<-FourXP_Z(specObs, verbose=F, doHelio=F)
@@ -198,7 +198,7 @@ Measured Redshift =  0.5598869
 Redshift Precision (in vs measured) =  21.73643 km/s
 ```
 
-And we got the right redshfit back, so the observation would have been sucessful! Note that here we have set filter=T in FourXP_Zpat(). This is used to remove large noise spikes inthe data prior to identifying emission lines (this wasn't needed in the earlier case, as the spectrum had no noise!).
+And we got the right redshift back, so the observation would have been sucessful! Here we have set `filter=T` in `FourXP_Zpat()`. This is used to remove large noise spikes in the data prior to identifying emission lines (this wasn't needed in the earlier case, as the spectrum had no noise!).
 
 All of this functionality is combined in the high level FourXP_Sim() function, which applied all stages of this process. You can input the desired spectrum you wish to produce and the observing contraints, and get the final observed spectrum back (including a lot of diagnostics!). Here is a full line example: 
 
