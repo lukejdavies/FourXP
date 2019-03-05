@@ -185,7 +185,7 @@ This makes a folder with *spec$id*_ETCout/ containing all of the 4FS_ETC outputs
 specObs<-stitch4MOST(id = 'TestSpectrum', blue_file = 'TestSpectrum_ETCout/specout_template_TestSpectrum_LRS_blue.fits', green_file = "TestSpectrum_ETCout/specout_template_TestSpectrum_LRS_green.fits", red_file = 'TestSpectrum_ETCout/specout_template_TestSpectrum_LRS_red.fits', blue_thru_file = '/Applications/4FS-ETC_app/4FS_ETC_system_model_v0.2/LRS/lrs_blue_material_4fs_efficiency_total.fits', green_thru_file = '/Applications/4FS-ETC_app/4FS_ETC_system_model_v0.2/LRS/lrs_green_material_4fs_efficiency_total.fits', red_thru_file = '/Applications/4FS-ETC_app/4FS_ETC_system_model_v0.2/LRS/lrs_red_material_4fs_efficiency_total.fits', ParaFile = "TestSpectrum_ETCout/ETC_input_params_tmp.txt", makePlot = F)
 ``
 
-Finally, we can one again redshift our output spectrum to see if we would have obtained a redshfit with this observation: 
+Finally, we can one again redshift our output spectrum to see if we would have obtained a redshift with this observation: 
 
 ```R
 FourXP_ZOut<-FourXP_Z(specObs, verbose=F, doHelio=F)
