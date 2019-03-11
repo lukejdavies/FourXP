@@ -81,6 +81,47 @@ install_github("lukejdavies/FourXP")
 install4XP(downloadModels = FALSE)
 ```
 
+#### Alternative Install using git clone (suggested by broukema)
+
+In the shell in a scratch directory with plenty of space (at least 1Gb for the big files, which I haven't
+tested yet):
+
+```R
+git clone https://github.com/lukejdavies/FourXP
+mkdir lib
+```
+
+In R (type R in the shell to get started);
+
+```R
+?utils::install.packages  # learn a little about package installation
+install.packages(c('FITSio', 'astro', 'magicaxis', 'Cairo', 'fftw'),type="source", lib="./lib")
+install.packages("./", repos = NULL, type="source", lib="./lib")
+.libPaths("./lib")
+library(FourXP)
+```
+
+This gives me (Debian GNU/Linux Stretch (stable)), after the last command, with no use of sudo or the root password:
+
+```R
+Loading required package: FITSio
+Loading required package: astro
+Loading required package: MASS
+Loading required package: plotrix
+Loading required package: magicaxis
+Loading required package: Cairo
+Loading required package: fftw
+
+Attaching package: ‘FourXP’
+
+The following objects are masked from ‘package:fftw’:
+
+    DCT, FFT, IDCT, IFFT, planDCT, planFFT
+```
+
+
+
+
 #### External Dependencies
 
 Some of the functionality of FourXP requires an installed version of the 4MOST Exposure Time Calculator (ETC). Functions such as observeSpec4FS() and FourXP_Sim() require that the ETC is excecutable from the command line as '4FS_ETC', you will also need to point towards the ETC system model directory (systemModDir) in these functions. 
