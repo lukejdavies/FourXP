@@ -243,6 +243,9 @@ makeSpec<-function(id='tmp', z=0.456, mag=19.8, band='VST_r', col=0.4, mass=10.2
     
     
     ##########################################
+
+    flux_sc<-flux_sc+abs(min(flux_sc, na.rm=T))
+
     
     wavefac=1e-10
     c<-299792458

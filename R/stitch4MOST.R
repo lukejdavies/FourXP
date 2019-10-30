@@ -223,8 +223,8 @@ stitch4MOST<-function(observeSpec4FSOut=NA, id=id, blue_file=blue_file, green_fi
   CommonError[which(CommonWave>max(blue_wave,na.rm=T) & CommonWave<min(red_wave,na.rm=T))]<-green_CommonError[which(CommonWave>max(blue_wave,na.rm=T) & CommonWave<min(red_wave,na.rm=T))]
   CommonError[which(CommonWave>max(green_wave,na.rm=T))]<-red_CommonError[which(CommonWave>max(green_wave,na.rm=T))]
   
-  CommonError[overLapBGPix]<-((blue_CommonError[overLapBGPix]*scBG_B)+(green_CommonError[overLapBGPix]*scBG_G))
-  CommonError[overLapGRPix]<-((green_CommonError[overLapGRPix]*scGR_G)+(red_CommonError[overLapGRPix]*scGR_R))
+  CommonError[overLapBGPix]<-((blue_CommonError[overLapBGPix]*scBG_B)+(green_CommonError[overLapBGPix]*scBG_G))*2
+  CommonError[overLapGRPix]<-((green_CommonError[overLapGRPix]*scGR_G)+(red_CommonError[overLapGRPix]*scGR_R))*2
   
   # Write relavent parts to CommonFilter (weights) vector... 
   CommonFilterBlue<-rep(NA,length(CommonWave))

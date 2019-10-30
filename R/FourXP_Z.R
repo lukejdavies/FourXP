@@ -23,6 +23,7 @@
 #' @param z_prior redshift prior, two element vector with c(lo, hi)
 #' @param doHelio TRUE/FALSE perform helocentric correction. If TRUE you must 
 #' provide RA,DEC,UTMJD, longitude, latitude and altitue in the specRaw structure. 
+#' @param mask7600Abs TRUE/FALSE mask out sky absoption region at 7600A (spectrum is simply masked between 7580 and 7730)
 #' @param verbose  TRUE/FLASE - let me know what's going on.
 #' @return a list containing various outputs from the redshifting code. key parameters are: 
 #' results$Z=best-fit redshift, results$Z1_PROB=probability of best-fit redshift and results$TEMPLATE=best fit template number. 
@@ -35,7 +36,10 @@
 #' plotLines(z=FourXP_Z_out$z)
 #' cat('Probability of correct redshift is: ', FourXP_Z_out$prob, '\n')
 #' @export
-FourXP_Z= function(specRaw, tempFile = NA,oversample = 5, num = 5, templateNumbers = c(2:14,16:22,40:47), stLambda = 3726, endLambda = 8850, minval = -1.0e4, maxval = 1.0e6, z_prior=c(-1,1000), doHelio=T,highZ=T, verbose = TRUE){
+FourXP_Z= function(specRaw, tempFile = NA,oversample = 5, num = 5, templateNumbers = c(2:14,16:22,29,32,40:47), stLambda = 3726, endLambda = 8850, minval = -1.0e4, maxval = 1.0e6, z_prior=c(-1,1000), doHelio=T,highZ=T, mask7600Abs=T, verbose = TRUE){
+  
+  if (mask7600Abs==T){specRaw$flux[which(specRaw$wave>7580 & specRaw$wave<7730)]<-NA}
+  
   
   if (is.null(specRaw$error)){
     cat('**WARNING** No error supplied! Using dummy error....','\n')
@@ -115,9 +119,10 @@ CROSSTIME <- CROSSTIME[3] - proc.time()[3]
     cat("Probabilty on best match is ",spec$prob,"\n")
   }
   
+  spec$ccinfo<-ccinfo
   spec$results        <- c(peaks[[1]]$redshift, spec$prob, peaks[[1]]$crossCorr, peaks[[1]]$template, peaks[[2]]$redshift, 
-                           peaks[[2]]$crossCorr, peaks[[2]]$template, peaks[[3]]$crossCorr, peaks[[4]]$crossCorr)
-  names(spec$results) <- c('Z', 'Z1_PROB', 'CC_SIGMA','TEMPLATE','Z2','CC_SIGMA2','TEMPLATE2','CC_SIGMA3','CC_SIGMA4')
+                           peaks[[2]]$crossCorr, peaks[[2]]$template, peaks[[3]]$redshift, peaks[[3]]$crossCorr,  peaks[[2]]$template, peaks[[4]]$crossCorr)
+  names(spec$results) <- c('Z', 'Z1_PROB', 'CC_SIGMA','TEMPLATE','Z2','CC_SIGMA2','TEMPLATE2','Z3','CC_SIGMA3','TEMPLATE3','CC_SIGMA4')
   TOTALTIME <- proc.time()[3] - TOTALTIME[3]
   spec$timings <- c(TOTALTIME, CROSSTIME, PROCESSTIME)
   names(spec$timings) <- c('totalTime', 'crossTime', 'proccessTime')

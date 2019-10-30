@@ -5,9 +5,10 @@
 \title{4MOST redshifting tool for 1D spectra}
 \usage{
 FourXP_Z(specRaw, tempFile = NA, oversample = 5, num = 5,
-  templateNumbers = c(2:14, 16:22, 40:47), stLambda = 3726,
+  templateNumbers = c(2:14, 16:22, 29, 32, 40:47), stLambda = 3726,
   endLambda = 8850, minval = -10000, maxval = 1e+06,
-  z_prior = c(-1, 1000), doHelio = T, highZ = T, verbose = TRUE)
+  z_prior = c(-1, 1000), doHelio = T, highZ = T, mask7600Abs = T,
+  verbose = TRUE)
 }
 \arguments{
 \item{specRaw}{R struture contianing information required information.
@@ -38,6 +39,8 @@ observatory altitude.}
 
 \item{doHelio}{TRUE/FALSE perform helocentric correction. If TRUE you must 
 provide RA,DEC,UTMJD, longitude, latitude and altitue in the specRaw structure.}
+
+\item{mask7600Abs}{TRUE/FALSE mask out sky absoption region at 7600A (spectrum is simply masked between 7580 and 7730)}
 
 \item{verbose}{TRUE/FLASE - let me know what's going on.}
 }
