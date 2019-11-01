@@ -25,10 +25,14 @@ GetRange = function(tNum, z_prior){
     rmsZRange <- c(-0.1,0.8)
     rmsZRange <- c(-0.1,1.5)
     allowedZRange <- c(-0.005, 1.500)
-  } else if (tNum >= 29 && tNum <= 32){
+  } else if (tNum == 29 | tNum == 32){
     # QSO templates - not working reliably with GAMA - needs highz set
     rmsZRange <- c(-0.1,5)
     allowedZRange <- c(0.8, 5.500)
+  } else if (tNum == 30 | tNum == 31){
+    # QSO templates - not working reliably with GAMA - needs highz set
+    rmsZRange <- c(-0.1,5)
+    allowedZRange <- c(1.5, 5.500)
   } else if (tNum >= 33 && tNum <= 49){
     # other galaxy templates
     rmsZRange <- c(-0.1,0.9)

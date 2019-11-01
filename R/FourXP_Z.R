@@ -24,6 +24,9 @@
 #' @param doHelio TRUE/FALSE perform helocentric correction. If TRUE you must 
 #' provide RA,DEC,UTMJD, longitude, latitude and altitue in the specRaw structure. 
 #' @param mask7600Abs TRUE/FALSE mask out sky absoption region at 7600A (spectrum is simply masked between 7580 and 7730)
+#' @param medWidth pixel  width of filtering kernal for ProcessSpectrum -> FitandFilter -> MedSmooth 
+#' @param smoothWidth pixel width of smoothing kernal for ProcessSpectrum -> FitandFilter -> MedSmooth
+#' @param runningWidth pixel width of smoothing kernal for ProcessSpectrum- > FitandFilter -> RunningMeanSmooth
 #' @param verbose  TRUE/FLASE - let me know what's going on.
 #' @return a list containing various outputs from the redshifting code. key parameters are: 
 #' results$Z=best-fit redshift, results$Z1_PROB=probability of best-fit redshift and results$TEMPLATE=best fit template number. 
@@ -36,7 +39,7 @@
 #' plotLines(z=FourXP_Z_out$z)
 #' cat('Probability of correct redshift is: ', FourXP_Z_out$prob, '\n')
 #' @export
-FourXP_Z= function(specRaw, tempFile = NA,oversample = 5, num = 5, templateNumbers = c(2:14,16:22,29,32,40:47), stLambda = 3726, endLambda = 8850, minval = -1.0e4, maxval = 1.0e6, z_prior=c(-1,1000), doHelio=T,highZ=T, mask7600Abs=T, verbose = TRUE){
+FourXP_Z= function(specRaw, tempFile = NA,oversample = 5, num = 5, templateNumbers = c(2:14,16:22,29,32,40:47), stLambda = 3726, endLambda = 8850, minval = -1.0e4, maxval = 1.0e6, z_prior=c(-1,1000), doHelio=T,highZ=T, mask7600Abs=T, medWidth=51, smoothWidth= 121, runningWidth=21, verbose = TRUE){
   
   if (mask7600Abs==T){specRaw$flux[which(specRaw$wave>7580 & specRaw$wave<7730)]<-NA}
   
@@ -62,7 +65,7 @@ FourXP_Z= function(specRaw, tempFile = NA,oversample = 5, num = 5, templateNumbe
     specRaw$lambda <- lambda
 PROCESSTIME <- proc.time()
   spec <- ProcessSpectrum(specRaw, stLambda = stLambda, endLambda = endLambda, minval = minval, maxval = maxval, 
-                          useInvCorrection = useInvCorrection,  verbose = verbose)
+                          useInvCorrection = useInvCorrection,  medWidth=medWidth, smoothWidth= smoothWidth, runningWidth=runningWidth, verbose = verbose)
   PROCESSTIME <- proc.time()[3] - PROCESSTIME[3]
   
   spec$countHighval  <- length(which(spec$flux > 20))

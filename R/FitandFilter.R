@@ -5,12 +5,15 @@
 #' @param endLambda ending wavelength for fitting
 #' @param os1 tmp
 #' @param os2 tmp
+#' @param medWidth pixel  width of filtering kernal for MedSmooth 
+#' @param smoothWidth pixel width of smoothing kernal for MedSmooth
+#' @param runningWidth pixel width of smoothing kernal for RunningMeanSmooth
 #' @param verbose TRUE/FALSE tell me what's going on
 #' @author I. Baldry, L. Davies, L Drygala
 #' @examples 
 #' None applicable
 #' @export
-FitandFilter = function(spec, stLambda, endLambda, os1, os2, verbose = TRUE){
+FitandFilter = function(spec, stLambda, endLambda, os1, os2, medWidth=51, smoothWidth= 121, runningWidth=21, verbose = TRUE){
   if(stLambda == -1){
     stLambda <- spec$lambda[1]
   } 
@@ -35,8 +38,8 @@ FitandFilter = function(spec, stLambda, endLambda, os1, os2, verbose = TRUE){
   # and then subtract smoothed spectrum. 
   fluxSmooth <- spec$flux
   #if numReject GE 1 then fluxSmooth[use_fit[reject_pts]] = 0.0
-  fluxSmooth <- MedSmooth(fluxSmooth, 51, 121)
-  fluxSmooth <- RunningMeanSmooth(x = fluxSmooth, width = 21)
+  fluxSmooth <- MedSmooth(fluxSmooth, medWidth, smoothWidth) #### old
+  fluxSmooth <- RunningMeanSmooth(x = fluxSmooth, width = runningWidth) #### old
   spec$flux <- spec$flux - fluxSmooth
   
   # Set end points smoothly to zero between stLambda+os2 and stLambda+os1

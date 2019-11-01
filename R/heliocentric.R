@@ -25,7 +25,7 @@ Heliocentric = function(ra, dec, epoch = 2000.0, jd = FALSE, tai = FALSE, longit
 
   
   if (!jd && tai){
-    jd <- 2400000 + tai / (24*3600)
+    jd <- 2400000.0 + tai / (24*3600)
   } else if (!jd){
     cat('\n *** Heliocentric ***Must specify either JD or TAI\n')
     return = 0

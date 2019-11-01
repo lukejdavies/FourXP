@@ -12,6 +12,9 @@
 #' @param clipvalue value to itterative clip peaks
 #' @param baddataErrorValue value to replace bad data with
 #' @param useInvCorrection set relative flux calibration for GAMA 
+#' @param medWidth pixel  width of filtering kernal for FitandFilter -> MedSmooth 
+#' @param smoothWidth pixel width of smoothing kernal for FitandFilter -> MedSmooth
+#' @param runningWidth pixel width of smoothing kernal for FitandFilter ->RunningMeanSmooth
 #' @param verbose TRUE/FALSE,  tell me whats going on
 #' @author I. Baldry, L. Davies
 #' @examples 
@@ -19,7 +22,7 @@
 #' @export
 ProcessSpectrum = function(specIn, stLambda = 3726, endLambda = 8850, os1 = 10, os2 = 60, 
                            minval = -1.0e4, maxval = 1.0e6, clipvalue = 25, baddataErrorValue = 1e10, 
-                           useInvCorrection = TRUE, verbose = TRUE){
+                           useInvCorrection = TRUE, medWidth=51, smoothWidth= 121, runningWidth=21, verbose = TRUE){
   
   
   spec <- specIn
